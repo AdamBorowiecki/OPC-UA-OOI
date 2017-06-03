@@ -38,11 +38,13 @@ namespace UAOOI.Networking.ReferenceApplication.Producer
     }
     public override void AttachToNetwork()
     {
+      // MQTT_TODO: attach to MQTT broker
       m_Trace("Entering AttachToNetwork");
       m_NumberOfAttachToNetwork++;
     }
     protected override void SendFrame(byte[] buffer)
     {
+      // MQTT_TODO: implement sending of packets(MQTT topic insted UDP port)
       lock (this)
       {
         string _traceMessage = String.Format("Entering SendFrame buffer.Length = {0}", buffer.Length);
@@ -88,6 +90,7 @@ namespace UAOOI.Networking.ReferenceApplication.Producer
     /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
     protected override void Dispose(bool disposing)
     {
+      // MQTT_TODO: close connection, cleaning
       string _msg = String.Format("Entering Dispose disposing = {0}", disposing);
       m_Trace(_msg);
       lock (this)

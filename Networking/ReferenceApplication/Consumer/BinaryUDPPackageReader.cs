@@ -26,6 +26,7 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
     /// <param name="trace">The trace.</param>
     public BinaryUDPPackageReader(IUADecoder uaDecoder, int port, Action<string> trace, IConsumerViewModel viewModel) : base(uaDecoder)
     {
+      //uaDecoder is from library
       State = new MyState(this);
       m_Trace = trace;
       m_UDPPort = port;
@@ -49,6 +50,7 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
     public override void AttachToNetwork()
     {
       Debug.Assert(HandlerState.Operational != State.State);
+      // MQTT_TODO: connect to MQTT client MQTT broker
     }
     /// <summary>
     /// Releases unmanaged and - optionally - managed resources.
@@ -56,6 +58,7 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
     /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
     protected override void Dispose(bool disposing)
     {
+      // MQTT_TODO: think about it
       m_Trace("Entering Dispose");
       base.Dispose(disposing);
       if (!disposing)
@@ -69,6 +72,7 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
     #endregion
 
     #region API
+    // this region is for UDP
     internal bool ReuseAddress
     {
       get { return m_ReuseAddress; }
@@ -180,6 +184,7 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
       //  return;
       try
       {
+        // MQTT_TODO: start implementation here
         UdpClient _client = (UdpClient)asyncResult.AsyncState;
         IPEndPoint _UEndPoint = null;
         Byte[] _receiveBytes = _client.EndReceive(asyncResult, ref _UEndPoint);
@@ -190,8 +195,10 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
         int _length = _receiveBytes == null ? -1 : _receiveBytes.Length;
         m_Trace($"Message<{_UEndPoint.Address.ToString()}:{_UEndPoint.Port} [{_length}]>: {String.Join(", ", new ArraySegment<byte>(_receiveBytes, 0, Math.Min(_receiveBytes.Length, 80)).Select<byte, string>(x => x.ToString("X")).ToArray<string>())}");
         MemoryStream _stream = new MemoryStream(_receiveBytes, 0, _receiveBytes.Length);
+        // MQTT_TODO: finish implementation here
         OnNewFrameArrived(new BinaryReader(_stream, System.Text.Encoding.UTF8));
         m_Trace("BeginReceive");
+        // MQTT_TODO: below line should be replaced by extensive programming and "programowanie potokowe"
         m_UdpClient.BeginReceive(new AsyncCallback(m_ReceiveAsyncCallback), m_UdpClient);
       }
       catch (ObjectDisposedException _ex)
@@ -207,11 +214,16 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
     //Methods
     private void OnEnable()
     {
+      /* MQTT_TODO: this should be implemented due to MQTT. Parameters should be mapped:
+      UPD port should be mapped on topic
+      address could be probably name of broker
+      */
       m_UdpClient = new UdpClient();
       m_UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, ReuseAddress);
       m_UdpClient.ExclusiveAddressUse = !ReuseAddress;
       IPEndPoint _ep = new IPEndPoint(IPAddress.Any, m_UDPPort);
       m_UdpClient.Client.Bind(_ep);
+      // MQTT_TODO: multicast does not intested me
       if (m_MulticastGroup != null)
       {
         m_Trace($"Joining the multicast group: {m_MulticastGroup}");

@@ -84,6 +84,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\CommServer.UA.OOI\CommServer.UA.OOI\OOI.ConfigurationEditor\app.config = ..\CommServer.UA.OOI\CommServer.UA.OOI\OOI.ConfigurationEditor\app.config
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationMQTTWithOOI", "..\IntegrationMQTTWithOOI\IntegrationMQTTWithOOI.csproj", "{8EEAF321-D7A8-4F85-8CE4-6733BE5AADAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M2Mqtt.Net", "..\paho.mqtt.m2mqtt\M2Mqtt\M2Mqtt.Net.csproj", "{A11AEF5A-B246-4FE8-8330-06DB73CC8074}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M2Mqtt.NetCf39", "..\paho.mqtt.m2mqtt\M2Mqtt\M2Mqtt.NetCf39.csproj", "{BB9B7FF4-6502-41AF-8851-5060B67645E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M2Mqtt.NetMf42", "..\paho.mqtt.m2mqtt\M2Mqtt\M2Mqtt.NetMf42.csproj", "{F733523A-F14E-4F5A-9E7C-085CA80F52B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M2Mqtt.NetMf43", "..\paho.mqtt.m2mqtt\M2Mqtt\M2Mqtt.NetMf43.csproj", "{6A6D540B-8554-4FFD-8884-8BEFCCD9AD41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M2Mqtt.WinRT", "..\paho.mqtt.m2mqtt\M2Mqtt\M2Mqtt.WinRT.csproj", "{0238F0E3-A02B-428D-8A3F-410D8F15BB50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -182,6 +194,32 @@ Global
 		{591B6DB0-0D22-4E58-AA29-4EB10C0EAFFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{591B6DB0-0D22-4E58-AA29-4EB10C0EAFFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{591B6DB0-0D22-4E58-AA29-4EB10C0EAFFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EEAF321-D7A8-4F85-8CE4-6733BE5AADAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EEAF321-D7A8-4F85-8CE4-6733BE5AADAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EEAF321-D7A8-4F85-8CE4-6733BE5AADAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EEAF321-D7A8-4F85-8CE4-6733BE5AADAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A11AEF5A-B246-4FE8-8330-06DB73CC8074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A11AEF5A-B246-4FE8-8330-06DB73CC8074}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A11AEF5A-B246-4FE8-8330-06DB73CC8074}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A11AEF5A-B246-4FE8-8330-06DB73CC8074}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB9B7FF4-6502-41AF-8851-5060B67645E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB9B7FF4-6502-41AF-8851-5060B67645E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB9B7FF4-6502-41AF-8851-5060B67645E8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BB9B7FF4-6502-41AF-8851-5060B67645E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB9B7FF4-6502-41AF-8851-5060B67645E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB9B7FF4-6502-41AF-8851-5060B67645E8}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F733523A-F14E-4F5A-9E7C-085CA80F52B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F733523A-F14E-4F5A-9E7C-085CA80F52B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F733523A-F14E-4F5A-9E7C-085CA80F52B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F733523A-F14E-4F5A-9E7C-085CA80F52B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A6D540B-8554-4FFD-8884-8BEFCCD9AD41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A6D540B-8554-4FFD-8884-8BEFCCD9AD41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A6D540B-8554-4FFD-8884-8BEFCCD9AD41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A6D540B-8554-4FFD-8884-8BEFCCD9AD41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0238F0E3-A02B-428D-8A3F-410D8F15BB50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0238F0E3-A02B-428D-8A3F-410D8F15BB50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0238F0E3-A02B-428D-8A3F-410D8F15BB50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0238F0E3-A02B-428D-8A3F-410D8F15BB50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
