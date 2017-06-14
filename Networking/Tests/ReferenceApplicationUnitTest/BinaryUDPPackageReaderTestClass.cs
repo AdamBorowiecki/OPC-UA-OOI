@@ -12,7 +12,7 @@ namespace UAOOI.Networking.ReferenceApplication.UnitTest
   [TestClass]
   public class BinaryUDPPackageReaderTestClass
   {
-
+    //MQTT_TODO: Write similar tests
     #region TestMethod
     [TestMethod]
     [TestCategory("ReferenceApplication_BinaryUDPPackageReaderTestClass")]
