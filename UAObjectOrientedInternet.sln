@@ -98,6 +98,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M2Mqtt.WinRT", "..\paho.mqt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networking.ReferenceApplicationUsingMQTT", "..\ReferenceApplicationUsingMQTT\Networking.ReferenceApplicationUsingMQTT.csproj", "{1B98C563-0E89-4356-B22B-EA6315F466E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networking.ReferenceApplicationUsingMQTT.UnitTest", "..\ReferenceApplicationUsingMQTTUnitTest\Networking.ReferenceApplicationUsingMQTT.UnitTest.csproj", "{FA591743-99F9-4A42-B2C4-1BC3BEA7A010}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networking.SemanticDataUsingMQTT.UnitTest", "..\SemanticDatalUsingMQTTUnitTest\Networking.SemanticDataUsingMQTT.UnitTest.csproj", "{4BF51310-054A-40A0-BB9F-A991F1D3F850}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -226,6 +230,14 @@ Global
 		{1B98C563-0E89-4356-B22B-EA6315F466E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B98C563-0E89-4356-B22B-EA6315F466E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B98C563-0E89-4356-B22B-EA6315F466E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA591743-99F9-4A42-B2C4-1BC3BEA7A010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA591743-99F9-4A42-B2C4-1BC3BEA7A010}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA591743-99F9-4A42-B2C4-1BC3BEA7A010}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA591743-99F9-4A42-B2C4-1BC3BEA7A010}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BF51310-054A-40A0-BB9F-A991F1D3F850}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BF51310-054A-40A0-BB9F-A991F1D3F850}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BF51310-054A-40A0-BB9F-A991F1D3F850}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BF51310-054A-40A0-BB9F-A991F1D3F850}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
