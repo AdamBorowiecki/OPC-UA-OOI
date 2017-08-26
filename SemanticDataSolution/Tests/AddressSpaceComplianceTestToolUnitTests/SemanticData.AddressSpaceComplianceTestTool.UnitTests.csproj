@@ -65,12 +65,6 @@
     <Compile Include="ValidateFileUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AddressSpaceComplianceTestTool\SemanticData.AddressSpaceComplianceTestTool.csproj">
-      <Project>{05db9e60-b12b-4aa3-8a7c-514f87cff464}</Project>
-      <Name>SemanticData.AddressSpaceComplianceTestTool</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="OPCUAOOIKey.snk" />
     <None Include="Properties\AssemblyInfo.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
