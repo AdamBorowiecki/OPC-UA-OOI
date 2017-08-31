@@ -25,7 +25,8 @@ namespace UAOOI.Configuration.Networking.Serialization
       return m_ObservableMessageHandlers;
     }
     /// <summary>
-    /// Gets the instance configuration - collection of data sets represented as the <see cref="IInstanceConfiguration"/>.
+    /// Gets the instance configuration - collection of data sets represented as the <see cref="
+		/// IInstanceConfiguration"/>.
     /// </summary>
     /// <param name="descriptor">The descriptor.</param>
     /// <returns>IEnumerable&lt;IInstanceConfiguration&gt;.</returns>
