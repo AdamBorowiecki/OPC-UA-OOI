@@ -428,6 +428,7 @@ namespace UAOOI.Configuration.Networking.Serialization
     }
 
   }
+	//MQTT_TODO: extense this class
   [DataContractAttribute(Name = "MessageChannelConfiguration", Namespace = CommonDefinitions.Namespace)]
   [Serializable]
   public class MessageChannelConfiguration
