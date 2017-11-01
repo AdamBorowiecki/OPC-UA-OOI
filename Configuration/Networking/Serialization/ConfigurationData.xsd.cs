@@ -370,16 +370,16 @@ namespace UAOOI.Configuration.Networking.Serialization
   [KnownType(typeof(MessageReaderConfiguration))]
   [KnownType(typeof(MessageWriterConfiguration))]
   [SerializableAttribute()]
-  public partial class MessageHandlerConfiguration : object, IExtensibleDataObject
+  public partial class MessageHandlerConfiguration : object//, IExtensibleDataObject
   {
 
-    [NonSerializedAttribute()]
-    private ExtensionDataObject extensionDataField;
+    //[NonSerializedAttribute()]
+    //private ExtensionDataObject extensionDataField;
     private string NameField;
     private MessageChannelConfiguration ConfigurationField;
     private AssociationRole TransportRoleField;
 
-    public ExtensionDataObject ExtensionData
+    /*public ExtensionDataObject ExtensionData
     {
       get
       {
@@ -389,7 +389,7 @@ namespace UAOOI.Configuration.Networking.Serialization
       {
         this.extensionDataField = value;
       }
-    }
+    }*/
     [DataMemberAttribute(EmitDefaultValue = false)]
     public string Name
     {
@@ -431,9 +431,27 @@ namespace UAOOI.Configuration.Networking.Serialization
 	//MQTT_TODO: extense this class
   [DataContractAttribute(Name = "MessageChannelConfiguration", Namespace = CommonDefinitions.Namespace)]
   [Serializable]
-  public class MessageChannelConfiguration
+  public class MessageChannelConfiguration : IExtensibleDataObject
   {
-  }
+		public string MQTTBroker;
+		public string MQTTTopicFilter;
+		public byte MQTTQualityOfService;
+
+		//[NonSerializedAttribute()]
+		private ExtensionDataObject extensionDataField;
+		public ExtensionDataObject ExtensionData
+		{
+			get
+			{
+				return extensionDataField;
+			}
+
+			set
+			{
+				extensionDataField = value;
+			}
+		}
+	}
   [DataContractAttribute(Name = "AssociationRole", Namespace = CommonDefinitions.Namespace)]
   public enum AssociationRole : int
   {

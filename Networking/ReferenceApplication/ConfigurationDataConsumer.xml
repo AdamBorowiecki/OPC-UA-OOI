@@ -1159,7 +1159,7 @@
     </DataSetConfiguration>
   </DataSets>
   <MessageHandlers>
-    <MessageHandlerConfiguration i:type="MessageReaderConfiguration">
+    <MessageHandlerConfiguration i:type="-">
       <Name>UDP</Name>
       <TransportRole>Consumer</TransportRole>
       <ConsumerAssociationConfigurations>
