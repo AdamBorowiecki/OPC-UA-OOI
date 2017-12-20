@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UAOOI.Networking.SemanticData.Encoding;
 using UAOOI.Networking.SemanticData.MessageHandling;
 using UAOOI.Networking.SemanticData.UnitTest.Simulator;
-using UAOOI.Configuration.Networking.Serialization;
 
 namespace UAOOI.Networking.SemanticData.UnitTest
 {
@@ -20,15 +19,14 @@ namespace UAOOI.Networking.SemanticData.UnitTest
     {
       Guid _dataSetGuid = Guid.NewGuid();
       MyMessageHandlerFactory _mhf = new MyMessageHandlerFactory(_dataSetGuid);
-      DataManagementSetup _producer = Simulator.OPCUAServerProducerSimulator.CreateDevice(_mhf, _dataSetGuid);
+      OPCUAServerProducerSimulator _producer = OPCUAServerProducerSimulator.CreateDevice(_mhf, _dataSetGuid);
       Assert.IsNull(_producer.AssociationsCollection);
       Assert.IsNotNull(_producer.BindingFactory);
       Assert.IsNotNull(_producer.ConfigurationFactory);
       Assert.IsNotNull(_producer.EncodingFactory);
       Assert.IsNotNull(_producer.MessageHandlerFactory);
       Assert.IsNull(_producer.MessageHandlersCollection);
-      _producer.Initialize();
-      _producer.Run();
+      _producer.TestStart();
       Assert.AreEqual<int>(1, _producer.AssociationsCollection.Count);
       Assert.AreEqual<int>(1, _producer.MessageHandlersCollection.Count);
       ((OPCUAServerProducerSimulator)_producer).CheckConsistency();
@@ -41,7 +39,7 @@ namespace UAOOI.Networking.SemanticData.UnitTest
     {
       IMessageHandlerFactory _nmf = new MyMessageHandlerFactory(Guid.NewGuid());
       Assert.IsNotNull(_nmf);
-      IMessageWriter _nmr = _nmf.GetIMessageWriter("UDP", null, null);
+      IMessageWriter _nmr = _nmf.GetIMessageWriter("UDP", "4840,localhost", null);
       Assert.IsNotNull(_nmr);
     }
     [TestMethod]
@@ -67,14 +65,14 @@ namespace UAOOI.Networking.SemanticData.UnitTest
       #endregion
 
       #region IMessageHandlerFactory
-      public MessageHandling.IMessageReader GetIMessageReader(string name, MessageChannelConfiguration configuration, IUADecoder uaDecoder)
+      public MessageHandling.IMessageReader GetIMessageReader(string name, string configuration, IUADecoder uaDecoder)
       {
         throw new NotImplementedException();
       }
-      public MessageHandling.IMessageWriter GetIMessageWriter(string name, MessageChannelConfiguration configuration, IUAEncoder uaEncoder)
+      public MessageHandling.IMessageWriter GetIMessageWriter(string name, string configuration, IUAEncoder uaEncoder)
       {
         Assert.AreEqual("UDP", name);
-        Assert.IsNull(configuration);
+        Assert.AreEqual<string>("4840,localhost", configuration);
         return MessageWriter;
       }
       #endregion
@@ -91,6 +89,7 @@ namespace UAOOI.Networking.SemanticData.UnitTest
       #endregion
 
     }
+
     #endregion
 
   }

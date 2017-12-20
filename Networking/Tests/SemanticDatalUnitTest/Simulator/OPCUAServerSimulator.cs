@@ -17,10 +17,10 @@ namespace UAOOI.Networking.SemanticData.UnitTest.Simulator
   {
 
     #region creator
-    internal static DataManagementSetup CreateDevice(IMessageHandlerFactory messageHandlerFactory, Guid dataSetGuid)
+    internal static OPCUAServerProducerSimulator CreateDevice(IMessageHandlerFactory messageHandlerFactory, Guid dataSetGuid)
     {
       AssociationConfigurationId = dataSetGuid;
-      DataManagementSetup _ret = new OPCUAServerProducerSimulator();
+      OPCUAServerProducerSimulator _ret = new OPCUAServerProducerSimulator();
       _ret.ConfigurationFactory = new MyConfigurationFactory();
       _ret.BindingFactory = new MyBindingFFactory();
       _ret.EncodingFactory = new MyEncodingFactory();
@@ -30,6 +30,10 @@ namespace UAOOI.Networking.SemanticData.UnitTest.Simulator
     #endregion
 
     #region testing environment
+    internal void TestStart()
+    {
+      base.Start();
+    }
     /// <summary>
     /// Checks the consistency of the all items in the <see cref="AssociationsCollection"/> collection.
     /// </summary>
@@ -86,7 +90,7 @@ namespace UAOOI.Networking.SemanticData.UnitTest.Simulator
       private MessageHandlerConfiguration[] GetMessageTransport()
       {
         return new MessageWriterConfiguration[] { new MessageWriterConfiguration() { ProducerAssociationConfigurations = GetTransportAssociations(),
-                                                                                     Configuration = null,
+                                                                                     Configuration = new MessageChannelConfiguration() { ChannelConfiguration = "4840,localhost" },
                                                                                      Name = "UDP",
                                                                                      TransportRole = AssociationRole.Producer } };
       }
@@ -103,7 +107,8 @@ namespace UAOOI.Networking.SemanticData.UnitTest.Simulator
                                                                          Id = AssociationConfigurationId,
                                                                          RepositoryGroup = m_RepositoryGroup,
                                                                          InformationModelURI= AssociationConfigurationInformationModelURI
-        } };
+                                                                       }
+        };
       }
       private FieldMetaData[] GetMembers()
       {
@@ -154,18 +159,9 @@ namespace UAOOI.Networking.SemanticData.UnitTest.Simulator
         Assert.AreEqual<BuiltInType>(sourceEncoding.BuiltInType, binding.Encoding.BuiltInType);
       }
 
-      public IUADecoder UADecoder
-      {
-        get { return m_UADecoder; }
-      }
-      public IUAEncoder UAEncoder
-      {
-        get { return m_UAEncoder; }
-      }
+      public IUADecoder UADecoder { get; } = new Helpers.UABinaryDecoderImplementation();
 
-      private readonly IUADecoder m_UADecoder = new Helpers.UABinaryDecoderImplementation();
-      private readonly IUAEncoder m_UAEncoder = new Helpers.UABinaryEncoderImplementation();
-
+      public IUAEncoder UAEncoder { get; } = new Helpers.UABinaryEncoderImplementation();
     }
     #endregion
 
@@ -214,7 +210,7 @@ namespace UAOOI.Networking.SemanticData.UnitTest.Simulator
     /// <param name="configurationVersion">The configuration version.</param>
     /// <exception cref="ArgumentOutOfRangeException">length</exception>
     public void Send
-      (Func<int, IProducerBinding> producerBinding, ushort length, ulong contentMask, FieldEncodingEnum encoding, DataSelector 
+      (Func<int, IProducerBinding> producerBinding, ushort length, ulong contentMask, FieldEncodingEnum encoding, DataSelector
        dataSelector, ushort messageSequenceNumber, DateTime timeStamp, ConfigurationVersionDataType configurationVersion)
     {
       if (length > 2)
@@ -234,6 +230,11 @@ namespace UAOOI.Networking.SemanticData.UnitTest.Simulator
       m_HaveBeenActivated = true;
     }
     #endregion
+
+    public void Dispose()
+    {
+      throw new NotImplementedException();
+    }
 
     #region testing environment
     internal void ReadData()

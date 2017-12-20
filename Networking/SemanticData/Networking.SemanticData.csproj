@@ -22,7 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\UAOOI.Networking.SemanticData.xml</DocumentationFile>
-    <NoWarn>IDE0001, IDE0003</NoWarn>
+    <NoWarn>IDE0001, IDE0002,IDE0003,1591</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -42,6 +42,7 @@
   <ItemGroup>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
@@ -62,6 +63,7 @@
     <Compile Include="DataRepository\ConsumerBinding.cs" />
     <Compile Include="DataManagementSetup.cs" />
     <Compile Include="DataRepository\ConsumerBindingMonitoredValue.cs" />
+    <Compile Include="Diagnostics\SemanticEventSource.cs" />
     <Compile Include="Encoding\CommonDefinitions.cs" />
     <Compile Include="Encoding\IBinaryEncoder.cs" />
     <Compile Include="Encoding\IDataValue.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="MessageHandling\IMessageHandlerFactory.cs" />
     <Compile Include="MessageHandling\IMessageReader.cs" />
     <Compile Include="MessageHandling\IMessageWriter.cs" />
+    <Compile Include="MessageHandling\MessageHandler.cs" />
     <Compile Include="MessageHandling\MessageHeader.cs" />
     <Compile Include="MessageHandling\MessageLengthEnum.cs" />
     <Compile Include="MessageHandling\MessageReaderBase.cs" />
@@ -121,12 +124,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\..\CommonResources\ModelingProject\UANetworkingArchitecture\DependencyValidation1.layerdiagram">
+      <Link>DependencyValidation1.layerdiagram</Link>
+      <Visible>False</Visible>
+    </AdditionalFiles>
     <None Include="Association.cd" />
     <None Include="DataRepository\IBinding.cd" />
     <None Include="MessageHandling\MessageHandling.cd" />
     <None Include="OPCUAOOIKey.snk" />
+    <None Include="packages.config" />
     <None Include="README.md" />
     <None Include="READMEGettingStartedTutorial.md" />
+    <None Include="README_MQTTMapping.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AssemblyInfo.tt">
@@ -143,6 +152,10 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\Microsoft.DependencyValidation.Analyzers.0.9.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />
+    <Analyzer Include="..\..\packages\Microsoft.DependencyValidation.Analyzers.0.9.0\analyzers\dotnet\Microsoft.DependencyValidation.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

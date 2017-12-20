@@ -57,7 +57,6 @@ namespace UAOOI.Networking.SemanticData.Encoding
     {
       int m_EncodedGuidLength = 16;
       byte[] bytes = decoder.ReadBytes(m_EncodedGuidLength);
-      Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Lenght of bytes = " + bytes.Length);
       return new Guid(bytes);
     }
 

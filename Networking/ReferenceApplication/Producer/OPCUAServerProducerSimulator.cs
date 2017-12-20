@@ -1,8 +1,10 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
 using UAOOI.Networking.SemanticData;
+//using UAOOI.Networking.UDPMessageHandler;
 
 namespace UAOOI.Networking.ReferenceApplication.Producer
 {
@@ -10,34 +12,47 @@ namespace UAOOI.Networking.ReferenceApplication.Producer
   /// <summary>
   /// Class OPCUAServerProducerSimulator simulates interface to internal <see cref="CustomNodeManager"/> class.
   /// </summary>
-  internal sealed class OPCUAServerProducerSimulator : DataManagementSetup, IDisposable
+  [Export]
+  [PartCreationPolicy(CreationPolicy.Shared)]
+  internal sealed class OPCUAServerProducerSimulator : DataManagementSetup 
   {
-    #region creator
-    internal static void CreateDevice(IProducerViewModel viewModel, Action<IDisposable> toDispose, Action<string> trace)
+
+    #region Composition
+    [Import(typeof(IProducerViewModel))]
+    internal IProducerViewModel ViewModel
     {
-      Current = new OPCUAServerProducerSimulator();
-      toDispose(Current);
-      Current.m_Trace = trace;
-      Current.m_ViewModel = viewModel;
-      Current.Setup();
+      get; set;
+    }
+    #endregion
+
+    #region private
+    internal void Setup()
+    {
+      try
+      {
+        ViewModel.ProducerRestart = new RestartCommand(Restart);
+        ConfigurationFactory = new ProducerConfigurationFactory();
+        //MessageHandlerFactory = new MessageHandlerFactory();
+        BindAndStartRunning();
+        ViewModel.ProducerErrorMessage = "Running";
+      }
+      catch (Exception ex)
+      {
+        ViewModel.ProducerErrorMessage = String.Format("Error: {0}", ex.Message);
+        Dispose();
+      }
     }
     #endregion
 
     #region IDisposable
-    public void Dispose()
+    protected override void Dispose(bool disposing)
     {
-      foreach (IDisposable _2Dispose in m_ToDispose)
-        _2Dispose.Dispose();
-      m_ToDispose.Clear();
-    }
-    #endregion
-
-    #region API
-    /// <summary>
-    /// Gets the current instance of the <see cref="OPCUAServerProducerSimulator"/>.
-    /// </summary>
-    /// <value>The current.</value>
-    public static OPCUAServerProducerSimulator Current { get; private set; }
+      base.Dispose(disposing);
+      if (!disposing)
+        return;
+      foreach (IDisposable _toDispose in m_ToDispose)
+        _toDispose.Dispose();
+    } 
     #endregion
 
     #region private
@@ -59,36 +74,23 @@ namespace UAOOI.Networking.ReferenceApplication.Producer
       private Action m_restart;
     }
     private List<IDisposable> m_ToDispose = new List<IDisposable>();
-    private Action<string> m_Trace;
-    private IProducerViewModel m_ViewModel;
-    private void Setup()
-    {
-      try
-      {
-        m_ViewModel.ProducerRestart = new RestartCommand(Current.Restart);
-        Current.ConfigurationFactory = new ProducerConfigurationFactory();
-        CustomNodeManager _simulator = new CustomNodeManager();
-        m_ToDispose.Add(_simulator);
-        Current.BindingFactory = _simulator;
-        Current.EncodingFactory = _simulator;
-        Current.MessageHandlerFactory = new ProducerMessageHandlerFactory(x => m_ToDispose.Add(x), m_Trace, m_ViewModel);
-        Current.Initialize();
-        Current.Run();
-        _simulator.Run();
-        m_ViewModel.ProducerErrorMessage = "Running";
-      }
-      catch (Exception ex)
-      {
-        m_ViewModel.ProducerErrorMessage = String.Format("Error: {0}", ex.Message);
-        Dispose();
-      }
-    }
+    private CustomNodeManager m_Simulator = null;
     private void Restart()
     {
-      Dispose();
-      Setup();
+      System.Diagnostics.Debug.Assert(m_Simulator != null);
+       m_Simulator.Dispose();
+      BindAndStartRunning();
+    }
+    private void BindAndStartRunning()
+    {
+      m_Simulator = new CustomNodeManager();
+      BindingFactory = m_Simulator;
+      EncodingFactory = m_Simulator;
+      Start();
+      m_Simulator.Run();
     }
     #endregion
 
   }
+
 }

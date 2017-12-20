@@ -1159,8 +1159,11 @@
     </DataSetConfiguration>
   </DataSets>
   <MessageHandlers>
-    <MessageHandlerConfiguration i:type="-">
-      <Name>UDP</Name>
+    <MessageHandlerConfiguration i:type="MessageReaderConfiguration">
+      <Name>MQTT</Name>
+      <Configuration>
+        <ChannelConfiguration>broker.hivemq.com,OOITopicName,2</ChannelConfiguration>
+      </Configuration>
       <TransportRole>Consumer</TransportRole>
       <ConsumerAssociationConfigurations>
         <ConsumerAssociationConfiguration>

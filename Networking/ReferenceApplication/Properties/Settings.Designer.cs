@@ -12,7 +12,7 @@ namespace UAOOI.Networking.ReferenceApplication.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -20,42 +20,6 @@ namespace UAOOI.Networking.ReferenceApplication.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4840")]
-        public int UDPPort {
-            get {
-                return ((int)(this["UDPPort"]));
-            }
-            set {
-                this["UDPPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("localhost")]
-        public string RemoteHostName {
-            get {
-                return ((string)(this["RemoteHostName"]));
-            }
-            set {
-                this["RemoteHostName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4840")]
-        public int RemoteUDPPortNumber {
-            get {
-                return ((int)(this["RemoteUDPPortNumber"]));
-            }
-            set {
-                this["RemoteUDPPortNumber"] = value;
             }
         }
         
@@ -79,42 +43,6 @@ namespace UAOOI.Networking.ReferenceApplication.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("239.255.255.1")]
-        public string DefaultMulticastGroup {
-            get {
-                return ((string)(this["DefaultMulticastGroup"]));
-            }
-            set {
-                this["DefaultMulticastGroup"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool JoinMulticastGroup {
-            get {
-                return ((bool)(this["JoinMulticastGroup"]));
-            }
-            set {
-                this["JoinMulticastGroup"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ReuseAddress {
-            get {
-                return ((bool)(this["ReuseAddress"]));
-            }
-            set {
-                this["ReuseAddress"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ConfigurationEditor\\UAOOI.Configuration.DataBindings.dll")]
         public string ConfigurationEditorPlugInFilePath {
             get {
@@ -122,6 +50,15 @@ namespace UAOOI.Networking.ReferenceApplication.Properties {
             }
             set {
                 this["ConfigurationEditorPlugInFilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("UAOOI.Networking.UDPMessageHandler.dll")]
+        public string MessageHandlerProvider {
+            get {
+                return ((string)(this["MessageHandlerProvider"]));
             }
         }
     }

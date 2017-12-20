@@ -10,7 +10,6 @@ namespace UAOOI.Networking.SemanticData.UnitTest.Helpers
   /// </summary>
   internal class UABinaryEncoderImplementation : UABinaryEncoder
   {
-    //MQTT_TODO: write similar tests
     public override void Write(IBinaryEncoder encoder, IDataValue value)
     {
       throw new NotImplementedException();

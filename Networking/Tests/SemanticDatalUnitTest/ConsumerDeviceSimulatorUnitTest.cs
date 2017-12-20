@@ -1,10 +1,9 @@
 ﻿
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UAOOI.Networking.SemanticData.Encoding;
 using UAOOI.Networking.SemanticData.MessageHandling;
 using UAOOI.Networking.SemanticData.UnitTest.Simulator;
-using UAOOI.Configuration.Networking.Serialization;
 
 namespace UAOOI.Networking.SemanticData.UnitTest
 {
@@ -20,15 +19,14 @@ namespace UAOOI.Networking.SemanticData.UnitTest
     {
       UInt32 DataSetGuid = UInt32.MaxValue;
       MyMessageHandlerFactory _mhf = new MyMessageHandlerFactory(DataSetGuid);
-      DataManagementSetup _consumer = ConsumerDeviceSimulator.CreateDevice(_mhf, DataSetGuid);
+      ConsumerDeviceSimulator _consumer = ConsumerDeviceSimulator.CreateDevice(_mhf, DataSetGuid);
       Assert.IsNull(_consumer.AssociationsCollection);
       Assert.IsNotNull(_consumer.BindingFactory);
       Assert.IsNotNull(_consumer.ConfigurationFactory);
       Assert.IsNotNull(_consumer.EncodingFactory);
       Assert.IsNotNull(_consumer.MessageHandlerFactory);
       Assert.IsNull(_consumer.MessageHandlersCollection);
-      _consumer.Initialize();
-      _consumer.Run();
+      _consumer.InitializeAndRun();
       Assert.AreEqual<int>(1, _consumer.AssociationsCollection.Count);
       Assert.AreEqual<int>(1, _consumer.MessageHandlersCollection.Count);
       ((ConsumerDeviceSimulator)_consumer).CheckConsistency();
@@ -67,14 +65,14 @@ namespace UAOOI.Networking.SemanticData.UnitTest
       #endregion
 
       #region IMessageHandlerFactory
-      public IMessageReader GetIMessageReader(string name, MessageChannelConfiguration configuration, IUADecoder uaDecoder)
+      public IMessageReader GetIMessageReader(string name, string configuration, IUADecoder uaDecoder)
       {
         Assert.AreEqual("UDP", name);
         Assert.IsNull(configuration);
         Assert.IsNotNull(uaDecoder);
         return MyMessageReader;
       }
-      public IMessageWriter GetIMessageWriter(string name, MessageChannelConfiguration configuration, IUAEncoder uaEncoder)
+      public IMessageWriter GetIMessageWriter(string name, string configuration, IUAEncoder uaEncoder)
       {
         throw new NotImplementedException();
       }

@@ -2,24 +2,23 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UAOOI.Networking.SemanticData.Encoding;
-using System.Xml;
 using System.Net;
-using System.Collections.Generic;
 using System.Threading;
+using System.Xml;
 
-namespace UAOOI.Networking.ReferenceApplication.UnitTest
+namespace UAOOI.Networking.UDPMessageHandler.UnitTest
 {
   [TestClass]
   public class BinaryUDPPackageReaderTestClass
   {
-    //MQTT_TODO: Write similar tests
+
     #region TestMethod
     [TestMethod]
     [TestCategory("ReferenceApplication_BinaryUDPPackageReaderTestClass")]
     public void CreatorTestMethod()
     {
       bool _ExclusiveAddressUse = true;
-      using (Consumer.BinaryUDPPackageReader _reader1 = new Consumer.BinaryUDPPackageReader(new UADecoder(), 4840, x => Console.WriteLine(x), null))
+      using (BinaryUDPPackageReader _reader1 = new BinaryUDPPackageReader(new UADecoder(), 4840))
       {
         Assert.IsNotNull(_reader1);
         _reader1.ReuseAddress = _ExclusiveAddressUse;
@@ -27,7 +26,7 @@ namespace UAOOI.Networking.ReferenceApplication.UnitTest
         _reader1.State.Enable();
         Assert.IsNotNull(_reader1.MulticastGroup);
       }
-      using (Consumer.BinaryUDPPackageReader _reader1 = new Consumer.BinaryUDPPackageReader(new UADecoder(), 4840, x => Console.WriteLine(x), null))
+      using (BinaryUDPPackageReader _reader1 = new BinaryUDPPackageReader(new UADecoder(), 4840))
       {
         Assert.IsNotNull(_reader1);
         _reader1.State.Enable();
@@ -38,12 +37,12 @@ namespace UAOOI.Networking.ReferenceApplication.UnitTest
     public void ExclusiveAddressUseTrueTestMethod()
     {
       bool _ExclusiveAddressUse = true;
-      using (Consumer.BinaryUDPPackageReader _reader1 = new Consumer.BinaryUDPPackageReader(new UADecoder(), 4840, x => Console.WriteLine(x), null))
+      using (BinaryUDPPackageReader _reader1 = new BinaryUDPPackageReader(new UADecoder(), 4840))
       {
         Assert.IsNotNull(_reader1);
         _reader1.ReuseAddress = _ExclusiveAddressUse;
         _reader1.State.Enable();
-        using (Consumer.BinaryUDPPackageReader _reader2 = new Consumer.BinaryUDPPackageReader(new UADecoder(), 4840, x => Console.WriteLine(x), null))
+        using (BinaryUDPPackageReader _reader2 = new BinaryUDPPackageReader(new UADecoder(), 4840))
         {
           Assert.IsNotNull(_reader2);
           _reader2.ReuseAddress = _ExclusiveAddressUse;
@@ -57,12 +56,12 @@ namespace UAOOI.Networking.ReferenceApplication.UnitTest
     public void ExclusiveAddressUseFalseTestMethod()
     {
       bool _ExclusiveAddressUse = false;
-      using (Consumer.BinaryUDPPackageReader _reader1 = new Consumer.BinaryUDPPackageReader(new UADecoder(), 4840, x => Console.WriteLine(x), null))
+      using (BinaryUDPPackageReader _reader1 = new BinaryUDPPackageReader(new UADecoder(), 4840))
       {
         Assert.IsNotNull(_reader1);
         _reader1.ReuseAddress = _ExclusiveAddressUse;
         _reader1.State.Enable();
-        using (Consumer.BinaryUDPPackageReader _reader2 = new Consumer.BinaryUDPPackageReader(new UADecoder(), 4840, x => Console.WriteLine(x), null))
+        using (BinaryUDPPackageReader _reader2 = new BinaryUDPPackageReader(new UADecoder(), 4840))
         {
           Assert.IsNotNull(_reader2);
           _reader2.ReuseAddress = _ExclusiveAddressUse;
@@ -76,7 +75,7 @@ namespace UAOOI.Networking.ReferenceApplication.UnitTest
     public void ExclusiveAddressOperationalTestMethod()
     {
       bool _ExclusiveAddressUse = true;
-      using (Consumer.BinaryUDPPackageReader _reader1 = new Consumer.BinaryUDPPackageReader(new UADecoder(), 4840, x => Console.WriteLine(x), null))
+      using (BinaryUDPPackageReader _reader1 = new BinaryUDPPackageReader(new UADecoder(), 4840))
       {
         Assert.IsNotNull(_reader1);
         _reader1.ReuseAddress = _ExclusiveAddressUse;
@@ -90,8 +89,7 @@ namespace UAOOI.Networking.ReferenceApplication.UnitTest
     public void ExclusiveMulticastGroupTestMethod()
     {
       bool _ExclusiveAddressUse = true;
-      List<string> _traceList = new List<string>();
-      using (Consumer.BinaryUDPPackageReader _reader1 = new Consumer.BinaryUDPPackageReader(new UADecoder(), 4840, x => _traceList.Add(x), null))
+      using (BinaryUDPPackageReader _reader1 = new BinaryUDPPackageReader(new UADecoder(), 4840))
       {
         try
         {
@@ -100,15 +98,12 @@ namespace UAOOI.Networking.ReferenceApplication.UnitTest
           _reader1.MulticastGroup = IPAddress.Parse("239.0.0.1");
           _reader1.State.Enable();
           Thread.Sleep(200);
-          foreach (string _item in _traceList)
-            Console.WriteLine(_item);
         }
         catch (Exception _ex)
         {
           Assert.IsNotNull(_ex);
           Assert.Fail();
         }
-        Assert.AreEqual<int>(2, _traceList.Count);
         _reader1.MulticastGroup = IPAddress.Parse("239.0.0.1");
       }
     }

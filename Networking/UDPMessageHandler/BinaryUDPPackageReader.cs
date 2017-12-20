@@ -4,12 +4,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using UAOOI.Networking.SemanticData;
 using UAOOI.Networking.SemanticData.Encoding;
 using UAOOI.Networking.SemanticData.MessageHandling;
+using UAOOI.Networking.UDPMessageHandler.Diagnostic;
 
-namespace UAOOI.Networking.ReferenceApplication.Consumer
+namespace UAOOI.Networking.UDPMessageHandler
 {
   /// <summary>
   /// Class BinaryUDPPackageReader - custom implementation of the <see cref="BinaryDecoder"/> using UDP protocol.. 
@@ -24,17 +26,19 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
     /// </summary>
     /// <param name="port">The port.</param>
     /// <param name="trace">The trace.</param>
-    public BinaryUDPPackageReader(IUADecoder uaDecoder, int port, Action<string> trace, IConsumerViewModel viewModel) : base(uaDecoder)
+    public BinaryUDPPackageReader(IUADecoder uaDecoder, int port) : base(uaDecoder)
     {
-      //uaDecoder is from library
+      SemanticEventSource.Log.EnteringMethod(nameof(BinaryUDPPackageReader), nameof(BinaryUDPPackageReader));
       State = new MyState(this);
-      m_Trace = trace;
       m_UDPPort = port;
-      m_ViewModel = viewModel;
     }
     #endregion
 
     #region BinaryDecoder
+    /// <summary>
+    /// Occurs when new package is received and processed.
+    /// </summary>
+    public event EventHandler<UdpStatisticsEventArgs> UdpStatisticsEvent;
     /// <summary>
     /// Gets or sets the state.
     /// </summary>
@@ -49,8 +53,8 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
     /// </summary>
     public override void AttachToNetwork()
     {
+      SemanticEventSource.Log.EnteringMethod(nameof(BinaryUDPPackageReader), nameof(AttachToNetwork));
       Debug.Assert(HandlerState.Operational != State.State);
-      // MQTT_TODO: connect to MQTT client MQTT broker
     }
     /// <summary>
     /// Releases unmanaged and - optionally - managed resources.
@@ -58,8 +62,8 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
     /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
     protected override void Dispose(bool disposing)
     {
-      // MQTT_TODO: think about it
-      m_Trace("Entering Dispose");
+      SemanticEventSource.Log.EnteringMethod(nameof(BinaryUDPPackageReader), nameof(Dispose));
+
       base.Dispose(disposing);
       if (!disposing)
         return;
@@ -72,7 +76,6 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
     #endregion
 
     #region API
-    // this region is for UDP
     internal bool ReuseAddress
     {
       get { return m_ReuseAddress; }
@@ -105,10 +108,6 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
       string _multicastGroupMessage = m_MulticastGroup == null ? $"multicast off" : $"joined multicast: {m_MulticastGroup}";
       string _reuseAddressMessage = m_ReuseAddress ? "Address is reused" : "Address is not reused.";
       return $"BinaryUDPPackageReader UPD Port: {m_UDPPort} {_multicastGroupMessage} {_reuseAddressMessage}";
-    }
-    protected override void Trace(string message)
-    {
-      m_Trace(message);
     }
     #endregion
 
@@ -165,72 +164,65 @@ namespace UAOOI.Networking.ReferenceApplication.Consumer
 
     }
     //vars
-    private IConsumerViewModel m_ViewModel = null;
+    //private IConsumerViewModel m_ViewModel = null;
     private int m_NumberOfBytes = 0;
     private int m_NumberOfPackages = 0;
     private UdpClient m_UdpClient;
     private int m_UDPPort;
-    private Action<string> m_Trace;
     private bool m_ReuseAddress = true;
     private IPAddress m_MulticastGroup = null;
+    private IPGlobalProperties m_Properties = IPGlobalProperties.GetIPGlobalProperties();
     /// <summary>
     /// Implements <see cref="AsyncCallback"/> for UDP begin receive.
     /// </summary>
     /// <param name="asyncResult">The asynchronous result.</param>
-    private void m_ReceiveAsyncCallback(IAsyncResult asyncResult)
+    private void ReceiveAsyncCallback(IAsyncResult asyncResult)
     {
-      m_Trace("Entering m_ReceiveAsyncCallback");
+      SemanticEventSource.Log.EnteringMethod(nameof(BinaryUDPPackageReader), nameof(ReceiveAsyncCallback));
       //if (!asyncResult.IsCompleted)
       //  return;
       try
       {
-        // MQTT_TODO: start implementation here
         UdpClient _client = (UdpClient)asyncResult.AsyncState;
         IPEndPoint _UEndPoint = null;
         Byte[] _receiveBytes = _client.EndReceive(asyncResult, ref _UEndPoint);
         m_NumberOfPackages++;
         m_NumberOfBytes += _receiveBytes.Length;
-        m_ViewModel.ConsumerFramesReceived = m_NumberOfPackages;
-        m_ViewModel.ConsumerReceivedBytes = m_NumberOfBytes;
+        //m_ViewModel.ConsumerFramesReceived = m_NumberOfPackages;
+        //m_ViewModel.ConsumerReceivedBytes = m_NumberOfBytes;
         int _length = _receiveBytes == null ? -1 : _receiveBytes.Length;
-        m_Trace($"Message+++++++++++++++++++++++++++++++++++++++++++++++<{_UEndPoint.Address.ToString()}:{_UEndPoint.Port} [{_length}]>: {String.Join(", ", new ArraySegment<byte>(_receiveBytes, 0, Math.Min(_receiveBytes.Length, 80)).Select<byte, string>(x => x.ToString("X")).ToArray<string>())}");
+        SemanticEventSource.Log.MessageContent(_UEndPoint, _length, _receiveBytes);
         MemoryStream _stream = new MemoryStream(_receiveBytes, 0, _receiveBytes.Length);
-        // MQTT_TODO: finish implementation here
         OnNewFrameArrived(new BinaryReader(_stream, System.Text.Encoding.UTF8));
-        m_Trace("BeginReceive");
-        // MQTT_TODO: below line should be replaced by extensive programming and "programowanie potokowe"
-        m_UdpClient.BeginReceive(new AsyncCallback(m_ReceiveAsyncCallback), m_UdpClient);
+        SemanticEventSource.Log.EnteringMethod(nameof(BinaryUDPPackageReader), nameof(UdpStatisticsEvent));
+        UdpStatisticsEvent?.Invoke(this, new UdpStatisticsEventArgs(m_Properties.GetUdpIPv4Statistics()));
+        m_UdpClient.BeginReceive(new AsyncCallback(ReceiveAsyncCallback), m_UdpClient);
       }
       catch (ObjectDisposedException _ex)
       {
-        m_Trace(String.Format("ObjectDisposedException = {0}", _ex.Message));
+        SemanticEventSource.Log.Failure($"ObjectDisposedException = {_ex.Message}");
       }
       catch (Exception _ex)
       {
-        m_Trace(String.Format("Exception {0}, message = {1}", _ex, GetType().Name, _ex.Message));
+        SemanticEventSource.Log.Failure($"Exception {_ex.Message}, type = {_ex.GetType().Name}");
       }
-      m_Trace("Exiting m_ReceiveAsyncCallback");
     }
     //Methods
     private void OnEnable()
     {
-      /* MQTT_TODO: this should be implemented due to MQTT. Parameters should be mapped:
-      UPD port should be mapped on topic
-      address could be probably name of broker
-      */
+      SemanticEventSource.Log.EnteringMethod(nameof(BinaryUDPPackageReader), nameof(OnEnable));
       m_UdpClient = new UdpClient();
       m_UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, ReuseAddress);
       m_UdpClient.ExclusiveAddressUse = !ReuseAddress;
       IPEndPoint _ep = new IPEndPoint(IPAddress.Any, m_UDPPort);
       m_UdpClient.Client.Bind(_ep);
-      // MQTT_TODO: multicast does not intested me
       if (m_MulticastGroup != null)
       {
-        m_Trace($"Joining the multicast group: {m_MulticastGroup}");
+        SemanticEventSource.Log.JoiningMulticastGroup(m_MulticastGroup);
         m_UdpClient.JoinMulticastGroup(m_MulticastGroup);
       }
-      m_Trace(ToString());
-      m_UdpClient.BeginReceive(new AsyncCallback(m_ReceiveAsyncCallback), m_UdpClient);
+      SemanticEventSource.Log.EnteringMethod(nameof(BinaryUDPPackageReader), nameof(m_UdpClient.BeginReceive)); 
+      m_UdpClient.BeginReceive(new AsyncCallback(ReceiveAsyncCallback), m_UdpClient);
     }
     private void OnDisable()
     {

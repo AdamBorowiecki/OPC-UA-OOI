@@ -1161,7 +1161,10 @@
   </DataSets>
   <MessageHandlers>
     <MessageHandlerConfiguration i:type="MessageWriterConfiguration">
-      <Name>UDP</Name>
+      <Name>MQTT</Name>
+      <Configuration>
+        <ChannelConfiguration>broker.hivemq.com,OOITopicName,2,true</ChannelConfiguration>
+      </Configuration>
       <TransportRole>Producer</TransportRole>
       <ProducerAssociationConfigurations>
         <ProducerAssociationConfiguration>
